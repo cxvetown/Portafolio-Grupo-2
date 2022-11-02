@@ -1,0 +1,35 @@
+﻿<Page x:Class="Vista.Pages.MantenedorUsuario"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:local="clr-namespace:Vista.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="785" d:DesignWidth="1140"
+      Title="MantenedorUsuario">
+
+    <Grid x:Name="grdUsuario">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid Margin="12,0" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Label Content="Usuarios" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="40" Foreground="#FFCC3300"/>
+        </Grid>
+        <Grid Grid.Row="1" Grid.Column="0" Margin="12,0" >
+            <Button x:Name="btnVistaAdmin" Click="btnVistaAdmin_Click" Width="250" Height="100" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Administradores" BorderBrush="#FF0099CC" Background="#FF0099CC" />
+        </Grid>
+        <Grid Grid.Row="1" Grid.Column="1" Margin="12,0" >
+            <Button x:Name="btnVistaFuncionarios" Click="btnVistaFuncionarios_Click" Width="250" Height="100" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Funcionarios" BorderBrush="#FF0099CC" Background="#FF0099CC" />
+        </Grid>
+        <Grid Grid.Row="1" Grid.Column="2" Margin="12,0" >
+            <Button x:Name="btnVistaClientes" Click="btnVistaClientes_Click" Width="250" Height="100" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Clientes" BorderBrush="#FF0099CC" Background="#FF0099CC" Cursor="Hand" />
+        </Grid>
+    </Grid>
+</Page>
