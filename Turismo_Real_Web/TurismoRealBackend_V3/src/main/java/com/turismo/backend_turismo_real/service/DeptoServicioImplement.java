@@ -1,5 +1,6 @@
 package com.turismo.backend_turismo_real.service;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,5 +35,26 @@ public class DeptoServicioImplement implements DeptoServicio{
 	@Override
 	public String id_foto() {
 		return repodepto.id_foto();
+	}
+
+	@Override
+	public List<String> fotos_departamento(int id_dpto) {
+		return repodepto.fotos_departamento(id_dpto);
+	}
+
+	//llamamos al repositorio para hacer la consulta
+	@Override
+	public int traerCapacidad(int id_dpto) {
+		return repodepto.traerCapacidad(id_dpto);
+	}
+
+	@Override
+	public List<Departamento> DeptoFiltro(String nombre_comuna) {
+		return repodepto.DeptoFiltro(nombre_comuna);
+	}
+
+	@Override
+	public List<?> departamentoFiltrado(Integer id_comuna, Date check_in, Date check_out) {
+		return repodepto.departamentoFiltrado(id_comuna, check_in, check_out);
 	}
 }

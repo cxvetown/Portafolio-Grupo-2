@@ -3,41 +3,16 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:Vista.Pages" xmlns:local1="clr-namespace:Vista.Pages.ValidacionesServDepto"
+      xmlns:local="clr-namespace:Vista.Pages" xmlns:local1="clr-namespace:Vista.Pages.Validaciones.ValidacionesServDepto"
+      xmlns:Clases="clr-namespace:Vista.Pages.ClasesVista"    
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="785" d:DesignWidth="1140"
       Title="MantenedorServDpto">
 
-    <Page.Resources>
-        <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource MaterialDesignTextBoxBase}">
-            <Setter Property="Validation.ErrorTemplate">
-                <Setter.Value>
-                    <ControlTemplate>
-                        <Grid>
-                            <Border x:Name="errorBorder" BorderBrush="#FFCB2E2E" BorderThickness="1" Background="#11FF0000" IsHitTestVisible="False"/>
-                            <AdornedElementPlaceholder x:Name="placeholder"/>
-                            <Popup AllowsTransparency="True" HorizontalAlignment="Right" HorizontalOffset="0" VerticalOffset="0" PopupAnimation="Fade" Placement="Right" 
-                            PlacementTarget="{Binding ElementName=errorBorder}" IsOpen="{Binding ElementName=placeholder, Path=AdornedElement.IsFocused, Mode=OneWay}">
-                                <StackPanel Orientation="Horizontal">
-                                    <Polygon  VerticalAlignment="Center" Points="0,4 4,0 4,8" Fill="#FFCB2E2E" Stretch="Fill" Stroke="#FFCB2E2E" StrokeThickness="2"/>
-                                    <Border Background="#FFCB2E2E" CornerRadius="4" Padding="4">
-                                        <TextBlock HorizontalAlignment="Center" Foreground="White" FontWeight="Bold" Margin="2,0,0,0"
-                                            Text="{Binding ElementName=placeholder, Path=AdornedElement.ToolTip, Mode=OneWay}" />
-                                    </Border>
-                                </StackPanel>
-                            </Popup>
-                        </Grid>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="Validation.HasError" Value="True">
-                    <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-    </Page.Resources>
+    <Page.DataContext>
+        <Clases:CVServDpto/>
+    </Page.DataContext>
 
     <Grid x:Name="grdSevDpto" Validation.Error="ItemError">
         <Grid.RowDefinitions>
@@ -45,50 +20,37 @@
             <RowDefinition Height="50"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Grid Margin="40,0" Grid.Row="0">
+        <Grid Margin="12,0" Grid.Row="0">
             <Label Content="Servicios Departamento" VerticalAlignment="Bottom" FontSize="40" Foreground="#532853"/>
             <Line Fill="#532853" VerticalAlignment="Bottom" Height="1" Stroke="#532853" X1="1140" Y1="1"/>
         </Grid>
-        <Grid Margin="40,0" Grid.Row="1">
+        <Grid Margin="12,0" Grid.Row="1">
             <Button x:Name="btnAbrirAgregarServDpto" Click="btnAbrirAgregarServDpto_Click" Width="150" HorizontalAlignment="Right" Content="Agregar" BorderBrush="#FF0099CC" Background="#FF0099CC"/>
         </Grid>
-        <Grid Grid.Row="2" Margin="40,0" >
-            <DataGrid AutoGenerateColumns="False" CanUserAddRows="False" x:Name="dtgServDpto" CanUserDeleteRows="False">
+        <Grid Grid.Row="2" Margin="12,0" >
+            <DataGrid AutoGenerateColumns="False" CanUserAddRows="False" x:Name="dtgServDpto" CanUserDeleteRows="False" MouseDoubleClick="dtgServDpto_MouseDoubleClick">
                 <DataGrid.Columns>
-                    <DataGridTemplateColumn Header="Id" Width="*">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <Label Content="{Binding Path=IdServDpto}"/>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
                     <DataGridTemplateColumn Header="Nombre" Width="*">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBox KeyDown="DtgServDptoUpdate_KeyDown">
-                                    <TextBox.Text>
+                                <Label>
+                                    <Label.Content>
                                         <Binding Path="NombreServDpto"  Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" ValidatesOnDataErrors="True">
-                                            <Binding.ValidationRules>
-                                                <local1:NombreHasta/>
-                                            </Binding.ValidationRules>
                                         </Binding>
-                                    </TextBox.Text>
-                                </TextBox>
+                                    </Label.Content>
+                                </Label>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Header="Descripción" Width="*" >
+                    <DataGridTemplateColumn Header="Descripción" Width="3*" >
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBox KeyDown="DtgServDptoUpdate_KeyDown" TextWrapping="Wrap">
-                                    <TextBox.Text >
+                                <Label>
+                                    <Label.Content>
                                         <Binding Path="DescServDpto"  Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" ValidatesOnDataErrors="True">
-                                            <Binding.ValidationRules>
-                                                <local1:DescHasta/>
-                                            </Binding.ValidationRules>
                                         </Binding>
-                                    </TextBox.Text>
-                                </TextBox>
+                                    </Label.Content>
+                                </Label>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>                    
@@ -106,24 +68,117 @@
         </Grid>
         <materialDesign:DialogHost Grid.RowSpan="3" x:Name="dhServDpto_ag" >
             <materialDesign:DialogHost.DialogContent>
-                <Grid Height="470" Width="320" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Grid Height="300" Width="320" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <StackPanel HorizontalAlignment="Center" Margin="0,30,0,0">
                         <Label Content="Agregar Servicio Departamento" FontSize="20"/>
                         <StackPanel Orientation="Horizontal" Height="39" Margin="0,10,0,0">
                             <materialDesign:PackIcon Kind="RoomService" Width="20" Height="20" Foreground="{Binding BorderBrush, ElementName=txt_nombre_ag}" VerticalAlignment="Bottom"/>
-                            <TextBox materialDesign:HintAssist.Hint="Nombre del servicio" Margin="10,0,10,0" Style="{StaticResource MaterialDesignFloatingHintTextBox}" x:Name="txt_nombre_ag" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" />
+                            <TextBox materialDesign:HintAssist.Hint="Nombre del servicio" Margin="10,0,10,0" Style="{StaticResource MaterialDesignFloatingHintTextBox}" x:Name="txt_nombre_ag" PreviewTextInput="txt_nombre_ag_PreviewTextInput" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" >
+                                <TextBox.Text>
+                                    <Binding ValidatesOnDataErrors="True" Path="Nombre" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                        <Binding.ValidationRules>
+                                            <local1:NombreHasta/>
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </TextBox.Text>
+                            </TextBox>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Height="39" Margin="0,20,0,0">
                             <materialDesign:PackIcon Kind="Details" Width="20" Height="20" Foreground="{Binding BorderBrush, ElementName=txt_desc_ag}" VerticalAlignment="Bottom"/>
-                            <TextBox  SpellCheck.IsEnabled="True" materialDesign:HintAssist.Hint="Descripción" Margin="10,0,0,0" Style="{StaticResource MaterialDesignFloatingHintTextBox}" x:Name="txt_desc_ag" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" />
+                            <TextBox  SpellCheck.IsEnabled="True" materialDesign:HintAssist.Hint="Descripción" Margin="10,0,0,0" Style="{StaticResource MaterialDesignFloatingHintTextBox}" x:Name="txt_desc_ag" PreviewTextInput="txt_desc_ag_PreviewTextInput" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" Width="220">
+                                <TextBox.Text>
+                                    <Binding ValidatesOnDataErrors="True" Path="Descripcion" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                        <Binding.ValidationRules>
+                                            <local1:DescHasta/>
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </TextBox.Text>
+                            </TextBox>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,50,0,0" HorizontalAlignment="Center">
-                            <Button x:Name="btn_Agregar_ServicioDpto" Style="{StaticResource MaterialDesignRaisedButton}" HorizontalAlignment="Center" Click="btn_Agregar_ServicioDpto_Click" Content="Agregar"  FontSize="14" FontWeight="Normal" Width="104" Margin="0,0,10,0"/>
+                            <Button x:Name="btn_Agregar_ServicioDpto" HorizontalAlignment="Center" Click="btn_Agregar_ServicioDpto_Click" Content="Agregar"  FontSize="14" FontWeight="Normal" Width="104" Margin="0,0,10,0">
+                                <Button.Style>
+                                    <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedButton}">
+                                        <Style.Resources/>
+                                        <Setter Property="IsEnabled" Value="False"/>
+                                        <Style.Triggers>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding Path=(Validation.HasError), ElementName=txt_nombre_ag}" Value="False"/>
+                                                    <Condition Binding="{Binding Path=(Validation.HasError), ElementName=txt_desc_ag}" Value="False"/>
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="IsEnabled" Value="True"/>
+                                            </MultiDataTrigger>
+                                            <DataTrigger Binding="{Binding Path=Text,ElementName=txt_nombre_ag}" Value="">
+                                                <Setter Property="IsEnabled" Value="False"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Path=Text,ElementName=txt_desc_ag}" Value="">
+                                                <Setter Property="IsEnabled" Value="False"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
                             <Button x:Name="btn_Cancelar_Ag" Content="Cancelar" Style="{StaticResource MaterialDesignRaisedButton}" Click="btn_Cancelar_Ag_Click" VerticalAlignment="Top"  FontSize="14" Width="104" Margin="10,0,0,0"/>
                         </StackPanel>
                     </StackPanel>
                 </Grid>
             </materialDesign:DialogHost.DialogContent>
         </materialDesign:DialogHost>
+        <materialDesign:DialogHost Grid.RowSpan="3" x:Name="dhServDpto_ac">
+            <materialDesign:DialogHost.DialogContent>
+                <Grid Height="300" Width="320" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <StackPanel HorizontalAlignment="Center" Margin="0,30,0,0">
+                        <Label Content="Actualizar Tour" FontSize="20"/>
+                        <StackPanel Orientation="Horizontal" Height="39" Margin="0,10,0,0">
+                            <materialDesign:PackIcon Kind="RoomService" Width="20" Height="20" Foreground="{Binding BorderBrush, ElementName=txt_nombre_ac}" VerticalAlignment="Bottom"/>
+                            <TextBox materialDesign:HintAssist.Hint="Nombre del Tour" PreviewTextInput="txt_nombre_ag_PreviewTextInput" MaxLength="50" Margin="10,0,10,0" Style="{StaticResource MaterialDesignFloatingHintTextBox}" x:Name="txt_nombre_ac" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" >
+                                <TextBox.Text>
+                                    <Binding ValidatesOnDataErrors="True" Path="Nombre" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                        <Binding.ValidationRules>
+                                            <local1:NombreHasta/>
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </TextBox.Text>
+                            </TextBox>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Height="39" Margin="0,20,0,0">
+                            <materialDesign:PackIcon Kind="Details" Width="20" Height="20" Foreground="{Binding BorderBrush, ElementName=txt_desc_ac}" VerticalAlignment="Bottom"/>
+                            <TextBox SpellCheck.IsEnabled="True" MaxLength="200" PreviewTextInput="txt_desc_ag_PreviewTextInput" materialDesign:HintAssist.Hint="Descripción del Tour" Margin="10,0,0,0" Style="{StaticResource MaterialDesignFloatingHintTextBox}" x:Name="txt_desc_ac" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" Width="220">
+                                <TextBox.Text>
+                                    <Binding ValidatesOnDataErrors="True" Path="Descripcion" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                        <Binding.ValidationRules>
+                                            <local1:DescHasta/>
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </TextBox.Text>
+                            </TextBox>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,50,0,0" HorizontalAlignment="Center">
+                            <Button x:Name="btn_Actualizar_ServD" Click="btn_Actualizar_ServD_Click" HorizontalAlignment="Center" Content="Agregar"  FontSize="14" FontWeight="Normal" Width="104" Margin="0,0,10,0">
+                                <Button.Style>
+                                    <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedButton}">
+                                        <Style.Resources/>
+                                        <Setter Property="IsEnabled" Value="False"/>
+                                        <Style.Triggers>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding Path=(Validation.HasError), ElementName=txt_nombre_ag}" Value="False"/>
+                                                    <Condition Binding="{Binding Path=(Validation.HasError), ElementName=txt_desc_ag}" Value="False"/>
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="IsEnabled" Value="True"/>
+                                            </MultiDataTrigger>
+
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
+                            <Button x:Name="btn_Cancelar_Ac" Click="btn_Cancelar_Ac_Click" Content="Cancelar" Style="{StaticResource MaterialDesignRaisedButton}" VerticalAlignment="Top"  FontSize="14" Width="104" Margin="10,0,0,0"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </materialDesign:DialogHost.DialogContent>
+        </materialDesign:DialogHost>
+
     </Grid>
 </Page>

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.turismo.backend_turismo_real.exception.NoSuchElementFoundException;
 import com.turismo.backend_turismo_real.modelo.AutentificarCliente;
 import com.turismo.backend_turismo_real.modelo.Cliente;
+import com.turismo.backend_turismo_real.modelo.Comuna;
 import com.turismo.backend_turismo_real.modelo.Supercliente;
 import com.turismo.backend_turismo_real.repositorio.ClienteRepositorio;
 import com.turismo.backend_turismo_real.service.AutentificarServicioImplement;
@@ -25,25 +26,40 @@ import com.turismo.backend_turismo_real.service.ClienteServicioImplement;
 
 @RestController
 @RequestMapping("/api/v1/")
-@CrossOrigin(origins  = "http://localhost:3000")
+@CrossOrigin(origins = "http://localhost:3000")
 public class ClienteControlador {
-	
+
 	@Autowired
 	private ClienteServicioImplement serv;
-	
-	@PostMapping("/registrarse" )
-	public int registrarse(@RequestBody Supercliente cli) {	
-		return serv.registrarse(cli.getEmail(), cli.getPass(), cli.getFono(),
-				cli.getRut(), cli.getNombre(), cli.getApellido());
+
+	// guarda los datos y los inserta en la base de datos
+	@PostMapping("/registrarse")
+	public int registrarse(@RequestBody Supercliente cli) {
+		return serv.registrarse(cli.getEmail(), cli.getPass(), cli.getFono(), cli.getRut(), cli.getNombre(),
+				cli.getApellido());
 	}
-	
+
+	// generar el POST para loguearse en el sistema
 	@PostMapping("/login")
 	public int login(@RequestBody Supercliente cli) {
 		return serv.login(cli.getEmail(), cli.getPass());
 	}
-	
+
+	// Con esto confirmamos el login y guardamos los datos de sesion
 	@GetMapping("/loginConfirmed/{id}")
-	public String loginConfirmed(@PathVariable int id){
+	public String loginConfirmed(@PathVariable int id) {
 		return serv.loginConfirmed(id);
+	}
+
+	// Hacemos una consulta para comprobar la existencia del correo
+	@PostMapping("/correoComprobacion")
+	public String comprobarCorreo(@RequestBody Supercliente cli) {
+		return serv.comprobarCorreo(cli.getEmail());
+	}
+
+	// Hacemos una consulta para comprobar la existencia del rut
+	@PostMapping("/rutComprobacion")
+	public String comprobarRut(@RequestBody Supercliente cli) {
+		return serv.comprobarRut(cli.getRut());
 	}
 }

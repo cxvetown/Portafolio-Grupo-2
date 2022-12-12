@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 
 import com.turismo.backend_turismo_real.modelo.Reserva;
+import com.turismo.backend_turismo_real.modelo.ServExtraReserva;
+import com.turismo.backend_turismo_real.modelo.ServicioExtra;
 import com.turismo.backend_turismo_real.modelo.superReserva;
 
 @Repository
@@ -28,4 +30,10 @@ public interface ReservaRepositorio extends JpaRepository<Reserva, Integer>{
 	
 	@Query(nativeQuery = true, value= "UPDATE reserva SET ESTADO_RESERVA = 'C' WHERE id_reserva = :id_reserva")
 	int update_reserva(@Param("id_reserva") int id_reserva);
+	
+	@Query(nativeQuery = true, value= "SELECT ID_DPTO FROM RESERVA WHERE id_reserva = :id_reserva")
+	int traerDpto(@Param("id_reserva") int id_reserva);
+	
+	@Query(nativeQuery = true, value= "update Reserva set valor_total = valor_serv_ex where id_reserva = :id_reserva")
+	ResponseEntity<ServicioExtra> update_valor_total(@Param("id_reserva") int id_reserva);
 }

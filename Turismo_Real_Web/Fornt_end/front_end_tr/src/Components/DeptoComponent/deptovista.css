@@ -1,8 +1,8 @@
 .cardsinfo {
     margin-left: 10px;
     max-width: 45%;
-    font-family: sans-serif;
-    padding-top: 5px;
+    font-family: poppins;
+    padding-top: 16px;
     text-align: left;
     font-size: large;
 }
@@ -11,8 +11,8 @@
     margin: 0 auto;
     margin-right: 10px;
     max-width: 45%;
-    font-family: sans-serif;
-    padding-top: 5px;
+    font-family: poppins;
+    padding-top: 3px;
     font-size: large;
 }
 
@@ -41,4 +41,10 @@
 .img1{
     height: 100%;
     width: 100%;
+}
+.titulo{
+    height: 80%;
+    width: 80%;
+    padding-left: 10%;
+    font-family: 'Poppins'; font-size: 40px;
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Controlador;
+using System;
 using System.Data;
 using System.Windows;
 using System.Windows.Controls;
@@ -12,6 +13,7 @@ namespace Vista.Pages
         {
             InitializeComponent();
             lblAdmin.Content = dt.Rows[0][0].ToString();
+            lblCantidad.Content = CDepartamento.ContarDpto();
         }
         private void btn_Dpto_Crud_Click(object sender, RoutedEventArgs e)
         {
@@ -42,11 +44,11 @@ namespace Vista.Pages
             NavigationService ns = NavigationService.GetNavigationService(this);
             ns.Navigate(new Uri("Pages/MantenedorServDpto.xaml", UriKind.RelativeOrAbsolute));
         }
-
-        private void btn_PlanTransporte_Crud_Click(object sender, RoutedEventArgs e)
+        private void btn_Reservas_Click(object sender, RoutedEventArgs e)
         {
             NavigationService ns = NavigationService.GetNavigationService(this);
-            ns.Navigate(new Uri("Pages/PlanificarTransporte.xaml", UriKind.RelativeOrAbsolute));
+            ns.Navigate(new Uri("Pages/MantenedorReservas.xaml", UriKind.RelativeOrAbsolute));
         }
+
     }
 }

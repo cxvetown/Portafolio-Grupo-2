@@ -1,0 +1,173 @@
+﻿<Page x:Class="Vista.PagesFuncionario.CheckList"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Vista.PagesFuncionario" xmlns:local1="clr-namespace:Vista.PagesFuncionario.Validaciones"
+      xmlns:Clases="clr-namespace:Vista.PagesFuncionario.ClasesVista"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"        
+      mc:Ignorable="d" 
+      d:DesignHeight="785" d:DesignWidth="1140"
+      Title="CheckList">
+
+    <Page.DataContext>
+        <Clases:CVCheckList/>
+    </Page.DataContext>
+
+    <Grid>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="100"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Grid Margin="12,0" Grid.Row="0">
+                <Label Content="Checklist" VerticalAlignment="Bottom" FontSize="40" Foreground="#FFCC3300"/>
+                <Line Fill="#FFCC3300" VerticalAlignment="Bottom" Height="1" Stroke="#FFCC3300" X1="1152" Y1="1"/>
+            </Grid>
+            <Grid Grid.Row="2" Margin="12">
+                <DataGrid AutoGenerateColumns="False" CanUserAddRows="False" x:Name="dtgItems">
+                    <DataGrid.Columns>
+                        <DataGridTemplateColumn Header="Objeto" Width="*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBox IsReadOnly="True">
+                                        <TextBox.Text >
+                                            <Binding Path="NombreObjeto" ValidatesOnDataErrors="True"/>
+                                        </TextBox.Text>
+                                    </TextBox>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="Precio" Width="*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBox IsReadOnly="True">
+                                        <TextBox.Text >
+                                            <Binding Path="ValorUnitarioObjeto" ValidatesOnDataErrors="True" UpdateSourceTrigger="Explicit"/>
+                                        </TextBox.Text>
+                                    </TextBox>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="Cantidad" Width="*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBox IsReadOnly="True">
+                                        <TextBox.Text >
+                                            <Binding Path="CantidadObjeto" ValidatesOnDataErrors="True"/>
+                                        </TextBox.Text>
+                                    </TextBox>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Header="Cant. Afectada" Width="*" IsReadOnly="True">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <ComboBox SelectedIndex="0" ItemsSource="{Binding Path=AuxCant}" SelectionChanged="ComboBox_SelectionChanged"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+            <Grid Grid.Row="2" Grid.Column="1" Margin="12">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="1.6*"/>
+                    <RowDefinition Height="0.2*"/>
+                </Grid.RowDefinitions>
+                <Grid>
+                    <StackPanel Width="500">
+                        <Label Content="Razón de la multa"/>
+                        <TextBox x:Name="txtRazonMulta">
+                            <TextBox.Text>
+                                <Binding ValidatesOnDataErrors="True" Mode="TwoWay" Path="Razon" UpdateSourceTrigger="PropertyChanged">
+                                    <Binding.ValidationRules>
+                                        <local1:NombreHasta/>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
+                        <Label Content="Descripción"/>
+                        <TextBox x:Name="txtDescripción" Height="100" HorizontalAlignment="Stretch" MaxLength="200" TextWrapping="Wrap">
+                            <TextBox.Text>
+                                <Binding ValidatesOnDataErrors="True" Mode="TwoWay" Path="Descripcion" UpdateSourceTrigger="PropertyChanged">
+                                    <Binding.ValidationRules>
+                                        <local1:DescHasta/>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
+                        <Grid Margin="0,20,0,0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                                <ColumnDefinition/>
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="0" Content="Deuda objetos:"/>
+                            <Label Grid.Column="1" x:Name="lblCostoObj" BorderThickness="0,0,0,1" BorderBrush="Black" Content="0" HorizontalContentAlignment="Center"/>
+                            <Label Grid.Column="2" Content="Otras deudas:"/>
+                            <TextBox Grid.Column="3" TextAlignment="Center" Text="0" HorizontalContentAlignment="Center" GotFocus="txtOtrosCostos_GotFocus" LostFocus="txtOtrosCostos_LostFocus" x:Name="txtOtrosCostos" KeyUp="txtOtrosCostos_KeyUp" PreviewTextInput="txtOtrosCostos_PreviewTextInput"/>
+                            <Label Grid.Column="4" Content="Deuda final:"/>
+                            <Label Grid.Column="5" x:Name="lblCostoTotal" BorderThickness="0,0,0,1" BorderBrush="Black" HorizontalContentAlignment="Center">
+                                <Label.Content>
+                                    <Binding ValidatesOnDataErrors="True" Mode="TwoWay" Path="Valor" UpdateSourceTrigger="PropertyChanged">
+                                        <Binding.ValidationRules>
+                                            <local1:ValorEsNroPositivo/>
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </Label.Content>
+                            </Label>
+                        </Grid>
+
+                    </StackPanel>
+                </Grid>
+                <Grid Grid.Row="1" Width="500">
+                    <DataGrid CanUserAddRows="False" AutoGenerateColumns="False" x:Name="dtgObjetosAfectados">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Objeto" Width="2*" Binding="{Binding Path=NombreObjeto}"/>
+                            <DataGridTextColumn Header="Cantidad" Width="*" Binding="{Binding Path=CantidadObjeto}"/>
+                            <DataGridTextColumn Header="Costo" Width="*" Binding="{Binding Path=ValorUnitarioObjeto}"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+                <Grid Grid.Row="2">
+                    <Button Width="150" x:Name="btnGenerarMulta" Content="Generar Multa" Click="btnGenerarMulta_Click">
+                        <Button.Style>
+                            <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedButton}">
+                                <Style.Resources/>
+                                <Setter Property="IsEnabled" Value="False"/>
+                                <Style.Triggers>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding Path=(Validation.HasError), ElementName=txtRazonMulta}" Value="False"/>
+                                            <Condition Binding="{Binding Path=(Validation.HasError), ElementName=txtDescripción}" Value="False"/>
+                                            <Condition Binding="{Binding Path=(Validation.HasError), ElementName=lblCostoTotal}" Value="False"/>
+                                        </MultiDataTrigger.Conditions>
+                                        <Setter Property="IsEnabled" Value="True"/>
+                                    </MultiDataTrigger>
+                                    <DataTrigger Binding="{Binding Path=Text,ElementName=txtRazonMulta}" Value="">
+                                        <Setter Property="IsEnabled" Value="False"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Path=Text,ElementName=txtDescripción}" Value="">
+                                        <Setter Property="IsEnabled" Value="False"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Path=Content,ElementName=lblCostoTotal}" Value="0">
+                                        <Setter Property="IsEnabled" Value="False"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Grid>
+</Page>

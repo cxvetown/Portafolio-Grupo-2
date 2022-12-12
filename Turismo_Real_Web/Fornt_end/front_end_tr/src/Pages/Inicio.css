@@ -1,0 +1,120 @@
+        .titulo {
+                height: 80%;
+                width: 80%;
+                padding-left: 10%;
+                font-family: 'Poppins';
+                font-size: 20px;
+        }
+
+        .divs {
+                width: 100%;
+                padding-left: 10%;
+                font-family: 'Poppins';
+                font-size: 20px;
+                position: relative;
+                display: table;
+        }
+
+        .divs1 {
+                font-family: 'Poppins';
+                font-size: 20px;
+                position: relative;
+                float: left;
+        }
+
+        .divs2 {
+
+                padding-left: 1%;
+                font-family: 'Poppins';
+                font-size: 20px;
+                position: relative;
+                float: left;
+        }
+
+        .divs3 {
+
+                padding-left: 1%;
+                font-family: 'Poppins';
+                font-size: 20px;
+                position: relative;
+                float: left;
+        }
+
+        .button_se {
+                padding-top: 20px;
+                padding-left: 15px;
+                background-color: transparent;
+                border-color: transparent;
+        }
+
+        .div_principal {
+                max-width: 100%;
+                max-height: 100%;
+        }
+
+        .foto_se {
+                padding-left: 190px;
+                padding-top: 80px;
+        }
+
+        .text_se {
+                padding-left: 600px;
+                width: 60%;
+                text-align: justify;
+        }
+
+        #div_fotos {
+                padding-left: 190px;
+                padding-top: 30px;
+                padding-bottom: 30px;
+                background-image: url("https://patrimonio.bienes.cl/wp-content/uploads/2020/09/Lugares-para-visitar-en-La-Serena.png");
+                background-size: 100% 100%;
+                background-repeat: no-repeat;
+                position: relative;
+                text-align: center;
+                color: white;
+        }
+
+        .botones_foto {
+                background-color: white;
+                color: black;
+                width: 250px;
+                height: 60px;
+        }
+
+        .botones_foto:hover {
+                background-color: #1687A7;
+                border-color: #1687A7;
+        }
+        .botones_foto:focus{
+                background-color: #1687A7;
+                border-color: #1687A7;
+        }
+        #texto_fotos {
+                width: 90%;
+                padding-left: 80px;
+                padding-top: 15px;
+                color: black;
+        }
+
+        #titulo_fotos {
+                width: 90%;
+                padding-left: 80px;
+                padding-top: 15px;
+                color: black;
+        }
+
+        .div_txt {
+                border-radius: 15px;
+                letter-spacing: normal;
+                opacity: 80%;
+                background-color: white;
+                font-size: medium;
+                font-weight: bold;
+                font-family: poppins;
+                max-width: 40%;
+                max-height: 40%;
+                position: absolute;
+                top: 200px;
+                right: 160px;
+        }

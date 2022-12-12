@@ -20,13 +20,14 @@ public class AutControlador {
 	@Autowired
 	private AutentificarServicioImplement AutServ;
 	
+	//envia un correo con el codigo de comprobacion
 	@PostMapping("/AutRegistrarse")
 	public AutentificarCliente guardarAutentificar(@RequestBody AutentificarCliente autCli) {
 		AutServ.SendEmail(autCli.getEmail(),"Validacion de correo" , "Hola, su numero de validacion es : " + autCli.getCode());
 		return AutServ.guardarAutentificar(autCli);
 		
 	}
-	
+	//revisar
 	@GetMapping("/autCodigo/{code}")
 	public String AutCodigo(@PathVariable int code) {
 		return AutServ.AutCodigo(code);

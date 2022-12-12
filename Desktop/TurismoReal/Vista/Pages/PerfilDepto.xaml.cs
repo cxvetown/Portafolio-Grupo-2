@@ -3,7 +3,9 @@ using Microsoft.Win32;
 using Modelo;
 using System;
 using System.Data;
+using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -14,7 +16,8 @@ namespace Vista.Pages
 {
     public partial class PerfilDepto : Page
     {
-        private Departamento departamento;
+
+        private Departamento? departamento;
         public PerfilDepto(Departamento depto)
         {
             InitializeComponent();
@@ -29,6 +32,14 @@ namespace Vista.Pages
             {
                 MessageBox.Show(e.Error.ErrorContent.ToString());
             }
+        }
+        private void MensajeError(string Mensaje)
+        {
+            MessageBox.Show(Mensaje, "Inventario", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+        private void MensajeOk(string Mensaje)
+        {
+            MessageBox.Show(Mensaje, "Inventario", MessageBoxButton.OK, MessageBoxImage.Information);
         }
         private void ListarObjetos()
         {
@@ -63,12 +74,14 @@ namespace Vista.Pages
         }
         private void btn_Agregar_Objeto_Click(object sender, RoutedEventArgs e)
         {
-            if (int.TryParse(txt_cantidad_ag.Text, out int valor))
-            {
-                if (!txt_objeto_ag.Text.Trim().Equals(""))
+            if (!txt_objeto_ag.Text.Trim().Equals(""))                
+            {                
+                if (!txt_cantidad_ag.Text.Trim().Equals(""))
                 {
-                    if (int.TryParse(txt_cantidad_ag.Text, out int cantidad))
+                    int.TryParse(txt_cantidad_ag.Text, out int cantidad);
+                    if (!txt_precio_unitario.Text.Trim().Equals(""))
                     {
+                        int.TryParse(txt_precio_unitario.Text, out int valor);
                         Objeto objeto = new()
                         {
                             NombreObjeto = txt_objeto_ag.Text,
@@ -76,12 +89,25 @@ namespace Vista.Pages
                             ValorUnitarioObjeto = valor
                         };
                         int estado = CInventario.CrearInventario(objeto, departamento.IdDepto);
-                        MessageBox.Show("Objeto agregado al inventario");
+                        MensajeOk("Objeto agregado al inventario");
                         ListarObjetos();
                         Limpiar();
                     }
+                    else
+                    {
+                        MensajeError("El precio unitario es requerido");
+                    }
+                }
+                else
+                {
+                    MensajeError("La cantidad es requerida");
                 }
             }
+            else
+            {
+                MensajeError("El nombre es requerido");
+            }
+            
         }
         private void Limpiar()
         {
@@ -95,7 +121,7 @@ namespace Vista.Pages
             try
             {
                 int estado = CInventario.EliminarObjeto(objeto.IdObjeto);
-                MessageBox.Show("Objeto eliminado del inventario");
+                MensajeOk("Objeto eliminado del inventario");
                 ListarObjetos();
             }
             catch (Exception)
@@ -108,7 +134,7 @@ namespace Vista.Pages
             dhFotos.IsOpen = true;
         }
         private void btnSubirFoto_Click(object sender, RoutedEventArgs e)
-        {
+        {   
             OpenFileDialog ofd = new();
             ofd.Filter = "Image names|*.jpg;*.png";
             ofd.Multiselect = false;
@@ -117,12 +143,20 @@ namespace Vista.Pages
             {
                 txtPathFoto.Text = ofd.FileName;
                 imgFoto.Source = new BitmapImage(new Uri(ofd.FileName));
-                MessageBox.Show(ofd.FileName);
             }
         }
         private void btn_Agregar_Img_Click(object sender, RoutedEventArgs e)
         {
-            string ext = System.IO.Path.GetExtension(txtPathFoto.Text);
+            if (txtPathFoto.Text == string.Empty)
+            {
+                MensajeError("Debe ingresar una foto"); 
+                return;
+            }
+            if (txtAltFoto.Text == string.Empty)
+            {
+                MensajeError("Debe ingresar una descripción");
+                return;
+            }
             string path = System.IO.Directory.GetCurrentDirectory();
             path = path.Substring(0, path.LastIndexOf("Desktop"));
             path = string.Concat(path, "Turismo_Real_Web\\Fornt_end\\front_end_tr\\src\\imagenes_Dpto\\");
@@ -130,14 +164,14 @@ namespace Vista.Pages
             Fotografia fotografia = new()
             {
                 Id_dpto = departamento.IdDepto,
-                Path_img = path,
                 Alt = txtAltFoto.Text
             };
-            string r = CFotografia.InsertarImagen(fotografia, ext);
-            if (r.Length > 0)
+            Stream st = File.OpenRead(txtPathFoto.Text);
+            int r = CFotografia.InsertarImagen(fotografia, st);
+            if (r > 0)
             {
-                r = System.IO.Path.Combine(path, r);
-                System.IO.File.Copy(txtPathFoto.Text, r, true);
+                string copiarImg = System.IO.Path.Combine(path, r.ToString() + ".jpg");
+                System.IO.File.Copy(txtPathFoto.Text, copiarImg, true);
                 dhFotos.IsOpen = false;
                 ListarImg();
             }
@@ -148,6 +182,9 @@ namespace Vista.Pages
         }
         private void ListarImg()
         {
+            string path = Directory.GetCurrentDirectory();
+            path = path.Substring(0, path.LastIndexOf("Desktop"));
+            path = string.Concat(path, "Turismo_Real_Web\\Fornt_end\\front_end_tr\\src\\imagenes_Dpto\\");
             try
             {
                 DataTable dataTable = CFotografia.ListarImagenes(departamento.IdDepto);
@@ -158,16 +195,15 @@ namespace Vista.Pages
                                    {
                                        Id_foto = Convert.ToInt32(rw[0]),
                                        Id_dpto = Convert.ToInt32(rw[1]),
-                                       Path_img = rw[2].ToString(),
-                                       Alt = rw[3].ToString()
+                                       Alt = rw[2].ToString()
                                    }).ToList();
-                    imgMain.Source = new BitmapImage(new Uri(fotografias[0].Path_img));
+                    imgMain.Source = new BitmapImage(new Uri(string.Concat(path, fotografias[0].Id_foto,".jpg")));
                     StkOtrasImg.Children.Clear();
                     try
                     {
                         for (int i = 1; i <= fotografias.Count-1 ; i++)
                         {
-
+                            string pathF = string.Concat(path, fotografias[i].Id_foto, ".jpg");
                             try
                             {
                                 StkOtrasImg.UnregisterName("imgDpto" + fotografias[i].Id_foto);
@@ -175,11 +211,10 @@ namespace Vista.Pages
                             }
                             catch (Exception)
                             {
-
                             }
                             Image image = new()
                             {
-                                Source = new BitmapImage(new Uri(fotografias[i].Path_img)),
+                                Source = new BitmapImage(new Uri(pathF)),
                                 Name = "imgDpto" + fotografias[i].Id_foto,
                                 Height = 100,
                                 Width = 100
@@ -213,22 +248,58 @@ namespace Vista.Pages
             img.Source = mainPath;
         }
 
-        private void DtgInventarioUpdate_KeyDown(object sender, KeyEventArgs e)
+        private void txt_objeto_ag_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
-            if (e.Key == Key.Enter)
+            Regex regex = new Regex("[^a-zA-Zá-úÁ-Ú0-9\"]+");
+            e.Handled = regex.IsMatch(e.Text);
+        }
+
+        private void txt_numero_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
+        }
+        
+        Objeto? objetoActualizar;
+
+        private void dtgInventario_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            objetoActualizar = (Objeto)dtgInventario.SelectedItem;
+            if (objetoActualizar == null) return;
+            dhObjetoAc.IsOpen = true;
+            txt_objeto_ac.Text = objetoActualizar.NombreObjeto.ToString();
+            txt_cantidad_ac.Text = objetoActualizar.CantidadObjeto.ToString();
+            txt_precio_unitario_ac.Text = objetoActualizar.ValorUnitarioObjeto.ToString();
+        }
+
+        private void BtnActualizarObjeto_Click(object sender, RoutedEventArgs e)
+        {
+            objetoActualizar.NombreObjeto = txt_objeto_ac.Text;
+            objetoActualizar.CantidadObjeto = int.Parse(txt_cantidad_ac.Text);
+            objetoActualizar.ValorUnitarioObjeto = int.Parse(txt_precio_unitario_ac.Text);
+            int estado = CInventario.ActualizarInventario(objetoActualizar);
+            if (estado > 0)
             {
-                Objeto objeto = (Objeto)dtgInventario.SelectedItem;
-                try
-                {
-                    int estado = CInventario.ActualizarInventario(objeto);
-                    MessageBox.Show("Inventario actualizado");
-                    ListarObjetos();
-                }
-                catch (Exception)
-                {
-                    throw;
-                }
+                MensajeOk("Inventario actualizado");
+                LimpiarAc();
+                ListarObjetos();
             }
+        }
+
+        private void LimpiarAc()
+        {
+            txt_objeto_ac.Clear();
+            txt_cantidad_ac.Clear();
+            txt_precio_unitario_ac.Clear();
+        }
+
+        private void BtnCancelarAc_Click(object sender, RoutedEventArgs e)
+        {
+            dhObjetoAc.IsOpen = false;
+            txt_objeto_ac.Text = string.Empty;
+            txt_cantidad_ac.Text = string.Empty;
+            txt_precio_unitario_ac.Text = string.Empty;
+            objetoActualizar = null;
         }
     }
 }

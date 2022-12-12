@@ -15,7 +15,7 @@ import com.turismo.backend_turismo_real.modelo.superReserva;
 @Repository
 public interface superReservaRepositorio extends JpaRepository<superReserva, Integer>{
 
-	@Query(nativeQuery = true, value= "SELECT VALOR_TOTAL, id_reserva, nombre_dpto, check_in, check_out, estado_pago, valor_total FROM RESERVA RES JOIN DEPARTAMENTO DPTO ON (RES.ID_DPTO = DPTO.ID_DPTO) WHERE ID_CLIENTE =:id_cliente AND ESTADO_RESERVA = 'I' OR ESTADO_RESERVA ='T'")
+	@Query(nativeQuery = true, value= "SELECT VALOR_TOTAL, id_reserva, nombre_dpto, check_in, check_out, estado_pago, valor_total FROM RESERVA RES JOIN DEPARTAMENTO DPTO ON (RES.ID_DPTO = DPTO.ID_DPTO) WHERE ID_CLIENTE =:id_cliente AND ESTADO_RESERVA = 'I' AND ESTADO_PAGO ='P'")
 	List<superReserva> reserva_cliente(@Param("id_cliente") Integer id);
 	
 	@Query(nativeQuery = true, value= "SELECT * FROM RESERVA WHERE ID_CLIENTE= :id_cliente")

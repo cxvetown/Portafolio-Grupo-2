@@ -24,6 +24,12 @@ public class superReservaControlador {
 	
 	@GetMapping("/lista_reserva/{id}")
 	public List<superReserva> reserva_cliente(@PathVariable Integer id){
+		List<superReserva> res = servreserva.reserva_cliente(id);
+		for(int i=0; i<res.size(); i++) {
+			System.out.println(res.get(i).getId_reserva());
+			System.out.println(res.get(i).getCheck_in());
+			System.out.println(res.get(i).getCheck_out());
+		}
 		return servreserva.reserva_cliente(id);
 	}
 

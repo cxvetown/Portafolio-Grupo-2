@@ -3,7 +3,9 @@ import carouselimg_1 from "../../Img/carousel_1.jpg";
 import carouselimg_2 from "../../Img/carousel_2.jpg";
 import carouselimg_3 from "../../Img/carousel_3.jpg";
 
+//se crea y se exporta el componente de carrusel para utilizarlo en otra ventana
 export const CarouselInicio = () => {
+    //devolvemos el codigo HTML con el carrusel de Bootstrap
     return (
         <Carousel className="w-100">
             <Carousel.Item>

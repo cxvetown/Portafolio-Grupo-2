@@ -3,6 +3,7 @@ using Modelo;
 using System;
 using System.Data;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -22,6 +23,14 @@ namespace Vista.Pages
             {
                 MessageBox.Show(e.Error.ErrorContent.ToString());
             }
+        }
+        private void MensajeError(string Mensaje)
+        {
+            MessageBox.Show(Mensaje, "Servicios Extra", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+        private void MensajeOk(string Mensaje)
+        {
+            MessageBox.Show(Mensaje, "Servicios Extra", MessageBoxButton.OK, MessageBoxImage.Information);
         }
         #region Agregar
         private void btnAbrirAgregarServ_Click(object sender, RoutedEventArgs e)
@@ -45,7 +54,7 @@ namespace Vista.Pages
                                 ValorServicioExtra = precio
                             };
                             int estado = CServicioExtra.IngresarServicio(servicioExtra);
-                            MessageBox.Show("Servicio agregado");
+                            MensajeOk("Servicio extra agregado");
                             ListarSvE();
                             Limpiar();
                         }
@@ -99,10 +108,11 @@ namespace Vista.Pages
             if (e.Key == Key.Enter)
             {
                 ServicioExtra servicioExtra = (ServicioExtra)dtgServE.SelectedItem;
+                if (servicioExtra.ValorServicioExtra <= 0) return;
                 try
                 {
                     int estado = CServicioExtra.ActualizarServicio(servicioExtra);
-                    MessageBox.Show("Servicio actualizado");
+                    MensajeOk("Servicio actualizado");
                     ListarSvE();
                 }
                 catch (Exception)
@@ -117,13 +127,60 @@ namespace Vista.Pages
             try
             {
                 int estado = CServicioExtra.EliminarServicio(servicioExtra.IdServicioExtra);
-                MessageBox.Show("Servicio eliminado");
+                MensajeOk("Servicio eliminado");
                 ListarSvE();
             }
             catch (Exception)
             {
                 throw;
             }
+        }
+
+        private void txt_string_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^a-zA-Zá-úÁ-Ú0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
+        }
+
+        private void txt_int_PreviewTextInput(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9]+");
+            e.Handled = regex.IsMatch(e.Text);
+        }
+
+        ServicioExtra? servEActualizar;
+        private void dtgServE_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            servEActualizar = (ServicioExtra)dtgServE.SelectedItem;
+            if (servEActualizar == null) return;
+            dhServ_ac.IsOpen = true;
+            txt_nombre_ac.Text = servEActualizar.NombreServicioExtra;
+            txt_desc_ac.Text = servEActualizar.DescripcionServicioExtra;
+            txt_precio_ac.Text = servEActualizar.ValorServicioExtra.ToString();
+        }
+
+        private void btn_Actualizar_Servicio_Click(object sender, RoutedEventArgs e)
+        {
+            servEActualizar.NombreServicioExtra = txt_nombre_ac.Text;
+            servEActualizar.DescripcionServicioExtra = txt_desc_ac.Text;
+            servEActualizar.ValorServicioExtra = int.Parse(txt_precio_ac.Text);
+            int estado = CServicioExtra.ActualizarServicio(servEActualizar);
+            if (estado > 0)
+            {
+                MensajeOk("Servicio extra actualizado");
+                ListarSvE();
+            }
+            dhServ_ac.IsOpen = false;
+            servEActualizar = null;
+        }
+
+        private void btn_Cancelar_Ac_Click(object sender, RoutedEventArgs e)
+        {
+            txt_nombre_ac.Text = string.Empty;
+            txt_desc_ac.Text = string.Empty;
+            txt_precio_ac.Text = string.Empty;
+            servEActualizar = null;
+            dhServ_ac.IsOpen = false;
         }
     }
 }

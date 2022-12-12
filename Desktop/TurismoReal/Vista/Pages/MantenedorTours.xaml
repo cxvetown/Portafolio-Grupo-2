@@ -3,42 +3,16 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-      xmlns:local="clr-namespace:Vista.Pages" xmlns:local1="clr-namespace:Vista.Pages.ValidacionesTour"
+      xmlns:local="clr-namespace:Vista.Pages" xmlns:local1="clr-namespace:Vista.Pages.Validaciones.ValidacionesTour"
+      xmlns:Clases="clr-namespace:Vista.Pages.ClasesVista"    
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="785" d:DesignWidth="1140"
       Title="MantenedorTours">
 
-    <Page.Resources>
-        <CollectionViewSource x:Key="regiones"/>
-        <Style TargetType="{x:Type TextBox}" BasedOn="{StaticResource MaterialDesignTextBoxBase}">
-            <Setter Property="Validation.ErrorTemplate">
-                <Setter.Value>
-                    <ControlTemplate>
-                        <Grid>
-                            <Border x:Name="errorBorder" BorderBrush="#FFCB2E2E" BorderThickness="1" Background="#11FF0000" IsHitTestVisible="False"/>
-                            <AdornedElementPlaceholder x:Name="placeholder"/>
-                            <Popup AllowsTransparency="True" HorizontalAlignment="Right" HorizontalOffset="0" VerticalOffset="0" PopupAnimation="Fade" Placement="Right" 
-                            PlacementTarget="{Binding ElementName=errorBorder}" IsOpen="{Binding ElementName=placeholder, Path=AdornedElement.IsFocused, Mode=OneWay}">
-                                <StackPanel Orientation="Horizontal">
-                                    <Polygon  VerticalAlignment="Center" Points="0,4 4,0 4,8" Fill="#FFCB2E2E" Stretch="Fill" Stroke="#FFCB2E2E" StrokeThickness="2"/>
-                                    <Border Background="#FFCB2E2E" CornerRadius="4" Padding="4">
-                                        <TextBlock HorizontalAlignment="Center" Foreground="White" FontWeight="Bold" Margin="2,0,0,0"
-                                            Text="{Binding ElementName=placeholder, Path=AdornedElement.ToolTip, Mode=OneWay}" />
-                                    </Border>
-                                </StackPanel>
-                            </Popup>
-                        </Grid>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-            <Style.Triggers>
-                <Trigger Property="Validation.HasError" Value="True">
-                    <Setter Property="ToolTip" Value="{Binding RelativeSource={RelativeSource Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
-                </Trigger>
-            </Style.Triggers>
-        </Style>
-    </Page.Resources>
+    <Page.DataContext>
+        <Clases:CVTour/>
+    </Page.DataContext>
 
     <Grid x:Name="grdMantTours" Validation.Error="ItemError">
         <Grid.RowDefinitions>
@@ -46,76 +20,57 @@
             <RowDefinition Height="50"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        <Grid Margin="40,0" Grid.Row="0">
+        <Grid Margin="12,0" Grid.Row="0">
             <Label Content="Tours" VerticalAlignment="Bottom" FontSize="40" Foreground="#532853"/>
             <Line Fill="#532853" VerticalAlignment="Bottom" Height="1" Stroke="#532853" X1="1140" Y1="1"/>
         </Grid>
-        <Grid Margin="40,0" Grid.Row="1">
+        <Grid Margin="12,0" Grid.Row="1">
             <Button x:Name="btnAbrirAgregarTours" Click="btnAbrirAgregarTours_Click" Width="150" HorizontalAlignment="Right" Content="Agregar" BorderBrush="#FF0099CC" Background="#FF0099CC"/>
         </Grid>
-        <Grid Grid.Row="2" Margin="40,0" >
-            <DataGrid x:Name="dtgTours" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False">
+        <Grid Grid.Row="2" Margin="12,0" >
+            <DataGrid x:Name="dtgTours" AutoGenerateColumns="False" CanUserAddRows="False" CanUserDeleteRows="False" MouseDoubleClick="dtgTours_MouseDoubleClick">
                 <DataGrid.Columns>
-                    <DataGridTemplateColumn Header="Id" Width="50">
+                    <DataGridTemplateColumn Header="Nombre Tour" Width="*">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <Label Content="{Binding Path=IdTour}"/>
+                                <Label>
+                                    <Label.Content>
+                                        <Binding Path="NombreTour" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" ValidatesOnDataErrors="True"/>
+                                    </Label.Content>
+                                </Label>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Header="Nombre Tour" Width="120">
+                    <DataGridTemplateColumn Header="Descripción Tour" Width="1.6*" >
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBox KeyDown="DtgTourUpdate_KeyDown">
-                                    <TextBox.Text>
-                                        <Binding Path="NombreTour"  Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" ValidatesOnDataErrors="True">
-                                            <Binding.ValidationRules>
-                                                <local1:NombreHasta/>
-                                            </Binding.ValidationRules>
-                                        </Binding>
-                                    </TextBox.Text>
-                                </TextBox>
+                                <Label>
+                                    <Label.Content>
+                                        <Binding Path="DescripcionTour" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" ValidatesOnDataErrors="True"/>
+                                    </Label.Content>
+                                </Label>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Header="Descripción Tour" Width="*" >
+                    <DataGridTemplateColumn Header="Valor Tour" Width="*">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBox KeyDown="DtgTourUpdate_KeyDown" TextWrapping="Wrap">
-                                    <TextBox.Text>
-                                        <Binding Path="DescripcionTour"  Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" ValidatesOnDataErrors="True">
-                                            <Binding.ValidationRules>
-                                                <local1:DescHasta/>
-                                            </Binding.ValidationRules>
-                                        </Binding>
-                                    </TextBox.Text>
-                                </TextBox>
-                            </DataTemplate>
-                        </DataGridTemplateColumn.CellTemplate>
-                    </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Header="Valor Tour" Width="180">
-                        <DataGridTemplateColumn.CellTemplate>
-                            <DataTemplate>
-                                <TextBox KeyDown="DtgTourUpdate_KeyDown">
-                                    <TextBox.Text >
-                                        <Binding Path="ValorTour"  Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" ValidatesOnDataErrors="True">
-                                            <Binding.ValidationRules>
-                                                <local1:ValorTourEsPositivo/>
-                                            </Binding.ValidationRules>
-                                        </Binding>
-                                    </TextBox.Text>
-                                </TextBox>
+                                <Label>
+                                    <Label.Content>
+                                        <Binding Path="ValorTour" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" ValidatesOnDataErrors="True"/>
+                                    </Label.Content>
+                                </Label>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
                     <DataGridTemplateColumn Header="Región Tour" Width="*">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <ComboBox IsSynchronizedWithCurrentItem="False" ItemsSource="{Binding Source={StaticResource regiones}}" SelectedItem="{Binding Region, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True}" SelectedValuePath="IdRegion" SelectedValue="{Binding Region.IdRegion}" DisplayMemberPath="NombreRegion" SelectionChanged="DtgToursUpdate_SelectionChanged" />
+                                <Label Content="{Binding Path=Region.NombreRegion}"/>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>
                     </DataGridTemplateColumn>
-                    <DataGridTemplateColumn Width="70">
+                    <DataGridTemplateColumn Width=".7*">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Button Padding="0" Click="DtgTourDelete" Background="#C0392B" BorderBrush="#C0392B">
@@ -127,35 +82,159 @@
                 </DataGrid.Columns>
             </DataGrid>
         </Grid>
-        <materialDesign:DialogHost Grid.RowSpan="3" x:Name="dhTour_ag" >
+        <materialDesign:DialogHost Grid.RowSpan="3" x:Name="dhTour_ag" CloseOnClickAway="True">
             <materialDesign:DialogHost.DialogContent>
-                <Grid Height="470" Width="320" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <Grid Height="400" Width="320" HorizontalAlignment="Center" VerticalAlignment="Center">
                     <StackPanel HorizontalAlignment="Center" Margin="0,30,0,0">
-                        <Label Content="Agregar Tour" FontSize="20"/>
+                        <Label Content="Agregar Tour" FontWeight="SemiBold" Foreground="#532853" HorizontalAlignment="Center" FontSize="20"/>
                         <StackPanel Orientation="Horizontal" Height="39" Margin="0,10,0,0">
                             <materialDesign:PackIcon Kind="RoomService" Width="20" Height="20" Foreground="{Binding BorderBrush, ElementName=txt_nombre_ag}" VerticalAlignment="Bottom"/>
-                            <TextBox materialDesign:HintAssist.Hint="Nombre del Tour" Margin="10,0,10,0" Style="{StaticResource MaterialDesignFloatingHintTextBox}" x:Name="txt_nombre_ag" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" />
+                            <TextBox materialDesign:HintAssist.Hint="Nombre del Tour" PreviewTextInput="txt_string_PreviewTextInput" MaxLength="50" Margin="10,0,10,0" Style="{StaticResource MaterialDesignFloatingHintTextBox}" x:Name="txt_nombre_ag" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" >
+                                <TextBox.Text>
+                                    <Binding ValidatesOnDataErrors="True" Path="Nombre" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                        <Binding.ValidationRules>
+                                            <local1:NombreHasta/>
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </TextBox.Text>
+                            </TextBox>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Height="39" Margin="0,20,0,0">
                             <materialDesign:PackIcon Kind="Details" Width="20" Height="20" Foreground="{Binding BorderBrush, ElementName=txt_desc_ag}" VerticalAlignment="Bottom"/>
-                            <TextBox  SpellCheck.IsEnabled="True" materialDesign:HintAssist.Hint="Descripción del Tour" Margin="10,0,0,0" Style="{StaticResource MaterialDesignFloatingHintTextBox}" x:Name="txt_desc_ag" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" />
+                            <TextBox SpellCheck.IsEnabled="True" MaxLength="200" PreviewTextInput="txt_string_PreviewTextInput" materialDesign:HintAssist.Hint="Descripción del Tour" Margin="10,0,0,0" Style="{StaticResource MaterialDesignFloatingHintTextBox}" x:Name="txt_desc_ag" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" Width="220">
+                                <TextBox.Text>
+                                    <Binding ValidatesOnDataErrors="True" Path="Descripcion" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                        <Binding.ValidationRules>
+                                            <local1:DescHasta/>
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </TextBox.Text>
+                            </TextBox>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Height="39" Margin="0,20,0,0">
                             <materialDesign:PackIcon Kind="Money" Width="20" Height="20" Foreground="{Binding BorderBrush, ElementName=txt_precio_ag}" VerticalAlignment="Bottom"/>
-                            <TextBox materialDesign:HintAssist.Hint="Valor del Tour" Margin="10,0,0,0" Style="{StaticResource MaterialDesignFloatingHintTextBox}" x:Name="txt_precio_ag" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" />
+                            <TextBox materialDesign:HintAssist.Hint="Valor del Tour" PreviewTextInput="txt_int_ag_PreviewTextInput" Margin="10,0,0,0" Style="{StaticResource MaterialDesignFloatingHintTextBox}" x:Name="txt_precio_ag" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" >
+                                <TextBox.Text>
+                                    <Binding ValidatesOnDataErrors="True" Path="Valor" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                        <Binding.ValidationRules>
+                                            <local1:ValorTourEsPositivo/>
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </TextBox.Text>
+                            </TextBox>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Height="39" Margin="0,20,0,0">
-                            <materialDesign:PackIcon Kind="Place" Width="20" Height="20" Foreground="{Binding BorderBrush, ElementName=cbo_comuna_ag}" VerticalAlignment="Bottom"/>
+                            <materialDesign:PackIcon Kind="Place" Width="20" Height="20" Foreground="{Binding BorderBrush, ElementName=cbo_region_ag}" VerticalAlignment="Bottom"/>
                             <ComboBox x:Name="cbo_region_ag" DisplayMemberPath="NombreRegion" Margin="10,0,0,0" materialDesign:HintAssist.Hint="Región" Style="{StaticResource MaterialDesignFloatingHintComboBox}" HorizontalAlignment="Center" VerticalAlignment="Top" Width="220" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0,50,0,0" HorizontalAlignment="Center">
-                            <Button x:Name="btn_Agregar_Tour" Click="btn_Agregar_Tour_Click" Style="{StaticResource MaterialDesignRaisedButton}" HorizontalAlignment="Center" Content="Agregar"  FontSize="14" FontWeight="Normal" Width="104" Margin="0,0,10,0"/>
+                            <Button x:Name="btn_Agregar_Tour" Click="btn_Agregar_Tour_Click" HorizontalAlignment="Center" Content="Agregar"  FontSize="14" FontWeight="Normal" Width="104" Margin="0,0,10,0">
+                                <Button.Style>
+                                    <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedButton}">
+                                        <Style.Resources/>
+                                        <Setter Property="IsEnabled" Value="False"/>
+                                        <Style.Triggers>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding Path=(Validation.HasError), ElementName=txt_nombre_ag}" Value="False"/>
+                                                    <Condition Binding="{Binding Path=(Validation.HasError), ElementName=txt_desc_ag}" Value="False"/>
+                                                    <Condition Binding="{Binding Path=(Validation.HasError), ElementName=txt_precio_ag}" Value="False"/>
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="IsEnabled" Value="True"/>
+                                            </MultiDataTrigger>
+                                            <DataTrigger Binding="{Binding Path=Text,ElementName=txt_nombre_ag}" Value="">
+                                                <Setter Property="IsEnabled" Value="False"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Path=Text,ElementName=txt_desc_ag}" Value="">
+                                                <Setter Property="IsEnabled" Value="False"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Path=Text,ElementName=txt_precio_ag}" Value="">
+                                                <Setter Property="IsEnabled" Value="False"/>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Path=SelectedIndex,ElementName=cbo_region_ag}" Value="-1">
+                                                <Setter Property="IsEnabled" Value="False"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
                             <Button x:Name="btn_Cancelar_Ag" Click="btn_Cancelar_Ag_Click" Content="Cancelar" Style="{StaticResource MaterialDesignRaisedButton}" VerticalAlignment="Top"  FontSize="14" Width="104" Margin="10,0,0,0"/>
                         </StackPanel>
                     </StackPanel>
                 </Grid>
             </materialDesign:DialogHost.DialogContent>
         </materialDesign:DialogHost>
+        <materialDesign:DialogHost Grid.RowSpan="3" x:Name="dhTour_ac">
+            <materialDesign:DialogHost.DialogContent>
+                <Grid Height="400" Width="320" HorizontalAlignment="Center" VerticalAlignment="Center">
+                    <StackPanel HorizontalAlignment="Center" Margin="0,30,0,0">
+                        <Label Content="Actualizar Tour" FontWeight="SemiBold" Foreground="#532853" HorizontalAlignment="Center" FontSize="20"/>
+                        <StackPanel Orientation="Horizontal" Height="39" Margin="0,10,0,0">
+                            <materialDesign:PackIcon Kind="RoomService" Width="20" Height="20" Foreground="{Binding BorderBrush, ElementName=txt_nombre_ac}" VerticalAlignment="Bottom"/>
+                            <TextBox materialDesign:HintAssist.Hint="Nombre del Tour" PreviewTextInput="txt_string_PreviewTextInput" MaxLength="50" Margin="10,0,10,0" Style="{StaticResource MaterialDesignFloatingHintTextBox}" x:Name="txt_nombre_ac" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" >
+                                <TextBox.Text>
+                                    <Binding ValidatesOnDataErrors="True" Path="Nombre" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                        <Binding.ValidationRules>
+                                            <local1:NombreHasta/>
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </TextBox.Text>
+                            </TextBox>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Height="39" Margin="0,20,0,0">
+                            <materialDesign:PackIcon Kind="Details" Width="20" Height="20" Foreground="{Binding BorderBrush, ElementName=txt_desc_ac}" VerticalAlignment="Bottom"/>
+                            <TextBox SpellCheck.IsEnabled="True" MaxLength="200" PreviewTextInput="txt_string_PreviewTextInput" materialDesign:HintAssist.Hint="Descripción del Tour" Margin="10,0,0,0" Style="{StaticResource MaterialDesignFloatingHintTextBox}" x:Name="txt_desc_ac" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" Width="220">
+                                <TextBox.Text>
+                                    <Binding ValidatesOnDataErrors="True" Path="Descripcion" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                        <Binding.ValidationRules>
+                                            <local1:DescHasta/>
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </TextBox.Text>
+                            </TextBox>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Height="39" Margin="0,20,0,0">
+                            <materialDesign:PackIcon Kind="Money" Width="20" Height="20" Foreground="{Binding BorderBrush, ElementName=txt_precio_ac}" VerticalAlignment="Bottom"/>
+                            <TextBox materialDesign:HintAssist.Hint="Valor del Tour" PreviewTextInput="txt_int_ag_PreviewTextInput" Margin="10,0,0,0" Style="{StaticResource MaterialDesignFloatingHintTextBox}" x:Name="txt_precio_ac" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" >
+                                <TextBox.Text>
+                                    <Binding ValidatesOnDataErrors="True" Path="Valor" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged">
+                                        <Binding.ValidationRules>
+                                            <local1:ValorTourEsPositivo/>
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </TextBox.Text>
+                            </TextBox>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Height="39" Margin="0,20,0,0">
+                            <materialDesign:PackIcon Kind="Place" Width="20" Height="20" Foreground="{Binding BorderBrush, ElementName=cbo_region_ac}" VerticalAlignment="Bottom"/>
+                            <ComboBox x:Name="cbo_region_ac" Margin="10,0,0,0" materialDesign:HintAssist.Hint="Región" Style="{StaticResource MaterialDesignFloatingHintComboBox}" HorizontalAlignment="Center"
+                                      VerticalAlignment="Top" Width="220" DisplayMemberPath="NombreRegion" SelectedValuePath="IdRegion" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,50,0,0" HorizontalAlignment="Center">
+                            <Button x:Name="btn_Actualizar_Tour" Click="btn_Actualizar_Tour_Click" HorizontalAlignment="Center" Content="Agregar"  FontSize="14" FontWeight="Normal" Width="104" Margin="0,0,10,0">
+                                <Button.Style>
+                                    <Style TargetType="Button" BasedOn="{StaticResource MaterialDesignRaisedButton}">
+                                        <Style.Resources/>
+                                        <Setter Property="IsEnabled" Value="False"/>
+                                        <Style.Triggers>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding Path=(Validation.HasError), ElementName=txt_nombre_ac}" Value="False"/>
+                                                    <Condition Binding="{Binding Path=(Validation.HasError), ElementName=txt_desc_ac}" Value="False"/>
+                                                    <Condition Binding="{Binding Path=(Validation.HasError), ElementName=txt_precio_ac}" Value="False"/>
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="IsEnabled" Value="True"/>
+                                            </MultiDataTrigger>
 
+                                        </Style.Triggers>
+                                    </Style>
+                                </Button.Style>
+                            </Button>
+                            <Button x:Name="btn_Cancelar_Ac" Click="btn_Cancelar_Ac_Click" Content="Cancelar" Style="{StaticResource MaterialDesignRaisedButton}" VerticalAlignment="Top"  FontSize="14" Width="104" Margin="10,0,0,0"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </materialDesign:DialogHost.DialogContent>
+        </materialDesign:DialogHost>
     </Grid>
 </Page>

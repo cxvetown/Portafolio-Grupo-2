@@ -1,5 +1,7 @@
 package com.turismo.backend_turismo_real.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -18,6 +20,11 @@ public class ComunaServiceImplement implements ComunaServicio{
 		Comuna comuna = comunaRepo.findById(id)
 				.orElseThrow();
 		return ResponseEntity.ok(comuna);
+	}
+
+	@Override
+	public List<Comuna> todosComuna() {
+		return comunaRepo.findAll();
 	}
 	
 	

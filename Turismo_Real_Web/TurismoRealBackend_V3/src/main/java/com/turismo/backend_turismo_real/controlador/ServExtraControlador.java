@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -19,8 +20,8 @@ public class ServExtraControlador {
 	@Autowired
 	private ServExtraServicioImpl servExtra;
 	
-	@GetMapping("/allService")
-	public List<ServicioExtra> todos_servicios() {
-		return servExtra.todos_servicios();
+	@GetMapping("/allService/{id_reserva}")
+	public List<ServicioExtra> todos_servicios(@PathVariable Integer id_reserva) {
+		return servExtra.todos_servicios(id_reserva);
 	}
 }

@@ -1,0 +1,37 @@
+﻿<Page x:Class="Vista.PagesFuncionario.MainMenu"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:Vista.PagesFuncionario"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"        
+      mc:Ignorable="d" 
+      d:DesignHeight="785" d:DesignWidth="1140"
+      Title="MainMenu">
+
+    <Grid>
+        <Grid x:Name="grdMainMenu">
+            <Grid Visibility="Visible"  HorizontalAlignment="Center" Width="726" Height="360">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="112"/>
+                    <RowDefinition Height="124"/>
+                </Grid.RowDefinitions>
+
+                <Grid Background="#FF0099CC" HorizontalAlignment="Center" Height="100" Margin="0,0,0,0" VerticalAlignment="Top" Width="726" Grid.ColumnSpan="3">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <Label x:Name="lblFunc" FontSize="24" Foreground="White" VerticalContentAlignment="Center" Margin="12"/>
+                </Grid>
+                <Button x:Name="btn_CheckIn" Click="btn_CheckIn_Click" Grid.Column="0" Grid.Row="1" Content="Check-In" HorizontalAlignment="Center" VerticalAlignment="Center" Background="White" BorderBrush="White" Height="118" Foreground="#FFCC3300" FontSize="18" FontWeight="Bold" FontStretch="Normal" FontStyle="Normal" Width="234" Margin="0,0,0,0"/>
+                <Button x:Name="btn_Checkout" Click="btn_Checkout_Click" Content="Check-Out" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center" Background="White" BorderBrush="White" Height="118" Foreground="#FFB6496D" FontSize="18" FontWeight="Bold" FontStretch="Normal" FontStyle="Normal" IsCancel="True" Width="234" Cursor="Hand"/>
+            </Grid>
+        </Grid>
+    </Grid>
+</Page>

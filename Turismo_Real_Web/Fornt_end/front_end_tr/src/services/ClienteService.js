@@ -1,10 +1,11 @@
 import axios from "axios";
 
-export const ingresarUsuario = async (correo, contraseña, telefono, rut, nombres, apellidos) => {
+export const ingresarUsuario = async (correo, contraseña, telefono, rut, dv, nombres, apellidos) => {
     try {
+        const rut_final = rut + "-" + dv
         const resp = await axios.post('http://localhost:8080/api/v1/registrarse', {
             email: correo, pass: contraseña, fono: telefono,
-            rut: rut, nombre: nombres, apellido: apellidos
+            rut: rut_final, nombre: nombres, apellido: apellidos
         })
         console.log(resp)
     } catch (error) {

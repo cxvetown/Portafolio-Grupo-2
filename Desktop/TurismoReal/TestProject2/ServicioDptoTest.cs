@@ -15,14 +15,14 @@ namespace Pruebas
             int resEsperado = 1;
             int resObtenido;
 
-            ServicioDpto servicioDpto = new()
+            Servicio servicioDpto = new()
             {
                 NombreServDpto = "Wifi",
                 DescServDpto = "Habitación con wifi"
             };
 
             //Act
-            resObtenido = Controlador.CServicioDpto.IngresarServicioDpto(servicioDpto);
+            resObtenido = Controlador.CServicio.IngresarServicioDpto(servicioDpto);
 
             Assert.Equal(resEsperado, resObtenido);
         }
@@ -34,7 +34,7 @@ namespace Pruebas
             //Arrange
             int resEsperado = 1;
             int resObtenido;
-            ServicioDpto servicioDpto = new()
+            Servicio servicioDpto = new()
             {
                 IdServDpto = 1,
                 NombreServDpto = "TV cable",
@@ -42,7 +42,7 @@ namespace Pruebas
             };
 
             //Act
-            resObtenido = Controlador.CServicioDpto.ActualizarServicioDpto(servicioDpto);
+            resObtenido = Controlador.CServicio.ActualizarServicioDpto(servicioDpto);
 
             Assert.Equal(resEsperado, resObtenido);
         }
@@ -55,7 +55,7 @@ namespace Pruebas
             DataTable servicioDpto;
 
             //Act
-            servicioDpto = CServicioDpto.ListarServiciosDpto();
+            servicioDpto = CServicio.ListarServiciosDpto();
 
             //Assert
             Assert.NotNull(servicioDpto.Rows[0]);
@@ -70,7 +70,7 @@ namespace Pruebas
             int resObtenido;
 
             //Act   ;se usa el ID a eliminar
-            resObtenido = Controlador.CServicioDpto.EliminarServicio(1);
+            resObtenido = Controlador.CServicio.EliminarServicio(1);
 
             //Assert
             Assert.Equal(resEsperado, resObtenido);

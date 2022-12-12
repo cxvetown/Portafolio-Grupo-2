@@ -11,7 +11,7 @@
         <Grid.Background>
             <ImageBrush ImageSource="/Img/background.png" Stretch="UniformToFill"/>
         </Grid.Background>
-        <Border BorderThickness="2" CornerRadius="6" Background="#CEFFFFFF" Height="350" Width="270">
+        <Border BorderThickness="2" CornerRadius="6" Background="#F5FFFFFF" Height="350" Width="270">
             <Grid HorizontalAlignment="Center"  VerticalAlignment="Center" Margin="0,0,0,0">
                 <Label Content="Inicio de sesión" HorizontalAlignment="Left" HorizontalContentAlignment="Left" VerticalAlignment="Top" Height="30" FontSize="24" FontWeight="Bold" Margin="16,0,0,0" Padding="0"/>
                 <Label Content="Inicia sesión con tus datos" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="16,35,0,0" Padding="0"/>

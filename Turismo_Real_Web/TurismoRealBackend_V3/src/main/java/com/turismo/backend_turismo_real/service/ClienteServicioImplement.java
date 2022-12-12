@@ -4,9 +4,11 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.turismo.backend_turismo_real.modelo.Cliente;
+import com.turismo.backend_turismo_real.modelo.Comuna;
 import com.turismo.backend_turismo_real.modelo.Supercliente;
 import com.turismo.backend_turismo_real.repositorio.ClienteRepositorio;
 
@@ -29,6 +31,17 @@ public class ClienteServicioImplement implements ClienteServicio{
 	@Override
 	public String loginConfirmed(int id) {
 		return repo.loginConfirmed(id);
+	}
+
+	@Override
+	public String comprobarCorreo(String email) {
+		return repo.comprobarCorreo(email);
+	}
+
+	@Override
+	public String comprobarRut(String rut) {
+		
+		return repo.comprobarRut(rut);
 	}
 	
 }

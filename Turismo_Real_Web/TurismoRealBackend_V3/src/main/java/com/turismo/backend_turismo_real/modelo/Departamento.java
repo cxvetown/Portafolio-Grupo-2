@@ -26,9 +26,7 @@ public class Departamento {
 	String foto_path;
 	@Column(name = "nombre_dpto")
 	String nombre_dpto;
-	
-	
-	
+
 	public String getNombre_dpto() {
 		return nombre_dpto;
 	}
@@ -78,6 +76,8 @@ public class Departamento {
 		Capacidad = capacidad;
 	}
 	
+	
+	
 	public Departamento(int idDepto, int tarifaDiaria, String direccion, int nroDepto, int capacidad,
 			String nombre_comuna, String foto_path, String nombre_dpto) {
 		super();
@@ -90,7 +90,6 @@ public class Departamento {
 		this.foto_path = foto_path;
 		this.nombre_dpto = nombre_dpto;
 	}
-	
 	public Departamento() {
 		
 	}

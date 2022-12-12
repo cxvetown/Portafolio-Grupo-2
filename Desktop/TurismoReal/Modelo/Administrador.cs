@@ -5,7 +5,7 @@
         private int idUsuario;
         private string rut;
         private string nombres;
-        private string apellidos;
+        private string apellidos;        
         private string email;
         private string contraseña;
         private int telefono;

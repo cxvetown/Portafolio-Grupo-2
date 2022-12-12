@@ -50,7 +50,7 @@ namespace Controlador
                 OracleCommand cmd = new()
                 {
                     Connection = con,
-                    CommandType = System.Data.CommandType.StoredProcedure,
+                    CommandType = CommandType.StoredProcedure,
                     CommandText = "Mantener_Tours.actualizar_tour"
                 };
                 cmd.Parameters.Add("identificador", OracleDbType.Int32, ParameterDirection.Input).Value = tour.IdTour;

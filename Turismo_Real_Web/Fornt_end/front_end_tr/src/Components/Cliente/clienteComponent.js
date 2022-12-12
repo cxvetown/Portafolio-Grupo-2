@@ -1,10 +1,11 @@
-import Example from '../Modals/ModalReg';
+import Registrar from '../Modals/ModalReg';
 
 const Registrarse = () => {
 
+    //el componente se encarga de cargar otro componente que contiene el formulario
     return (
         <>
-            <Example></Example>
+            <Registrar></Registrar>
         </>
 
     )

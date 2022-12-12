@@ -1,8 +1,13 @@
   .main-footer {
-      color: white;
-      background-color: #240046;
+      color: #1687A7;
+      background-color: #F6F5F5;
       bottom: 0;
       width: 100%;
       position: static;
+      font-family: 'Poppins'
+  }
+  .div1{
+    position : relative;
+	width : 100%;
   }
 

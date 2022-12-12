@@ -61,7 +61,6 @@ namespace Controlador
                 cmd.Parameters.Add("NRO", OracleDbType.Int32, ParameterDirection.Input).Value = dpto.NroDpto;
                 cmd.Parameters.Add("CAP", OracleDbType.Int32, ParameterDirection.Input).Value = dpto.Capacidad;
                 cmd.Parameters.Add("COMUNA", OracleDbType.Int32, ParameterDirection.Input).Value = dpto.Comuna.IdComuna;
-                cmd.Parameters.Add("disp", OracleDbType.Char, ParameterDirection.Input).Value = Convert.ToInt32(dpto.Disponibilidad);
                 cmd.Parameters.Add("r", OracleDbType.Int32, ParameterDirection.Output);
 
                 try
@@ -116,6 +115,36 @@ namespace Controlador
             }
             return resultado;
         }
+        public static int ContarDpto()
+        {
+            int resultado = new();
+            using (OracleConnection con = Conexion.getInstance().ConexionDB())
+            {
+                OracleCommand cmd = new()
+                {
+                    Connection = con,
+                    CommandType = CommandType.StoredProcedure,
+                    CommandText = "Mantener_Dpto.contar_dpto"
+                };
+                cmd.Parameters.Add("R", OracleDbType.Int32, ParameterDirection.Output);
+                try
+                {
+                    con.Open();
+                    cmd.ExecuteReader();
+                    resultado = int.Parse(cmd.Parameters["r"].Value.ToString());
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+                finally
+                {
+                    con.Close();
+                    cmd.Dispose();
+                }
+            }
+            return resultado;
+        }
         public static int EliminarDpto(int idDpto)
         {
             int resultado = 0;
@@ -144,6 +173,39 @@ namespace Controlador
                     cmd.Connection.Close();
                     cmd.Dispose();
                 }              
+            }
+            return resultado;
+        }
+        public static int ActualizarDisponibilidad(int id, bool estado)
+        {
+            int resultado = 0;
+            using (OracleConnection con = Conexion.getInstance().ConexionDB())
+            {
+                OracleCommand cmd = new()
+                {
+                    Connection = con,
+                    CommandType = CommandType.StoredProcedure,
+                    CommandText = "Mantener_Dpto.actualizar_dpto_dispo"
+                };
+                cmd.Parameters.Add("identificador", OracleDbType.Int32, ParameterDirection.Input).Value = id;
+                cmd.Parameters.Add("disp", OracleDbType.Char, ParameterDirection.Input).Value = Convert.ToInt32(estado);
+                cmd.Parameters.Add("r", OracleDbType.Int32, ParameterDirection.Output);
+
+                try
+                {
+                    con.Open();
+                    cmd.ExecuteReader();
+                    resultado = int.Parse(cmd.Parameters["r"].Value.ToString());
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+                finally
+                {
+                    con.Close();
+                    cmd.Dispose();
+                }
             }
             return resultado;
         }

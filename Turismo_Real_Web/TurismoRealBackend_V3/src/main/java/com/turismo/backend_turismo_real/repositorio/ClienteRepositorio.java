@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Repository;
 
 import com.turismo.backend_turismo_real.modelo.Cliente;
@@ -24,4 +25,10 @@ public interface ClienteRepositorio extends JpaRepository<Cliente, Integer>{
 	
 	@Query(nativeQuery = true, value= "SELECT EMAIL FROM USUARIO WHERE id_cliente= :id")
 	String loginConfirmed(@Param("id") int id);
+	
+	@Query(nativeQuery = true, value= "SELECT email FROM USUARIO WHERE email = :email")
+	String comprobarCorreo(@Param("email") String email);
+	
+	@Query(nativeQuery = true, value= "SELECT rut_cliente FROM CLIENTE WHERE rut_cliente = :rut")
+	String comprobarRut(@Param("rut") String rut);
 }
